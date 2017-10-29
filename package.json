@@ -1,0 +1,31 @@
+{
+  "name": "node-juejin",
+  "version": "1.0.0",
+  "description": "A Vue.js project",
+  "main": "index.js",
+  "author": "ht1131589588 <1131589588@qq.com>",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ht1131589588/node-interface.git"
+  },
+  "keywords": [
+    "koa",
+    "async"
+  ],
+  "license": "ISC",
+  "dependencies": {
+    "babel": "^6.23.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-register": "^6.26.0",
+    "koa": "2.0.0",
+    "koa-router": "7.0.0",
+    "koa-bodyparser": "3.2.0",
+    "nunjucks": "2.4.2",
+    "mime": "1.3.4",
+    "mz": "2.4.0",
+    "cross-env": "^5.0.0"
+  }
+}
