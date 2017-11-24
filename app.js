@@ -1,4 +1,5 @@
-const express = require('express');
+import express from 'express';
+import router from './routes/index.js';
 
 const app = express();
 
@@ -14,7 +15,7 @@ app.all('*', (req, res, next) => {
 	}
 });
 
-app.get('/test',function (req,res){
+app.post('/test',function (req,res){
     res.jsonp({
         serverIP: '127.0.0.1',
         name:'乘风',
@@ -28,7 +29,10 @@ app.get('/test',function (req,res){
     })
 })
 
-//在端口3000监听
+
+router(app);
+
+//在端口3001监听
 var server = app.listen(3001, function () {
     var host = server.address().address;
     var port = server.address().port;
