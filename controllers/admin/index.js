@@ -1,13 +1,14 @@
-import BaseComponent from "../../prototype/baseComponent";
+import AddressComponent from "../../prototype/addressComponent";
 
 
 
-class Admin extends BaseComponent {
+class Admin extends AddressComponent {
     constructor() {
         super()
         this.login = this.login.bind(this)
     }
     async login(req,res,next) {
+        
         res.jsonp({
             code: '0',
             name:'乘风',

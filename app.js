@@ -15,19 +15,19 @@ app.all('*', (req, res, next) => {
 	}
 });
 
-app.post('/test',function (req,res){
-    res.jsonp({
-        serverIP: '127.0.0.1',
-        name:'乘风',
-        github:'https://github.com/Faithree',
-        sex:'男',
-        examTime:'2017-04-13',
-        province:'广东',
-        city:'广州',
-        country:'中国',
-        age:22,
-    })
-})
+// app.post('/test',function (req,res){
+//     res.jsonp({
+//         serverIP: '127.0.0.1',
+//         name:'乘风',
+//         github:'https://github.com/Faithree',
+//         sex:'男',
+//         examTime:'2017-04-13',
+//         province:'广东',
+//         city:'广州',
+//         country:'中国',
+//         age:22,
+//     })
+// })
 
 
 router(app);

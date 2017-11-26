@@ -1,7 +1,7 @@
 {
   "name": "node-juejin",
   "version": "1.0.0",
-  "description": "利用node+koa+mongoose搭建的后台服务，提供restful接口api",
+  "description": "利用node+koa+mysql搭建的后台服务，提供restful接口api",
   "main": "index.js",
   "author": "ht1131589588 <1131589588@qq.com>",
   "scripts": {
@@ -26,6 +26,7 @@
     "express": "^4.16.2",
     "express-session": "^1.15.6",
     "formidable": "^1.1.1",
+    "mysql": "^2.15.0",
     "node-fetch": "^1.7.3",
     "qiniu": "^7.1.0",
     "sha1": "^1.1.1",
