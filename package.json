@@ -27,8 +27,11 @@
     "express-session": "^1.15.6",
     "formidable": "^1.1.1",
     "mysql": "^2.15.0",
+    "mysql2": "^1.5.1",
     "node-fetch": "^1.7.3",
+    "node-uuid": "^1.4.8",
     "qiniu": "^7.1.0",
+    "sequelize": "^4.26.0",
     "sha1": "^1.1.1",
     "uuid": "^3.1.0",
     "xss": "^0.3.4"
