@@ -1,5 +1,6 @@
 import AddressComponent from "../../prototype/addressComponent";
 import AdminModel from '../../models/admin/admin'
+import formidable from 'formidable'
 
 
 class Admin extends AddressComponent {
@@ -8,40 +9,166 @@ class Admin extends AddressComponent {
         this.login = this.login.bind(this)
     }
     async login(req,res,next) {
-        try {
-            AdminModel.findAll({
-                where: {
-                    name: 'Jike'
+        const form = new formidable.IncomingForm();
+        form.parse(req, async (err, fields, files) => {
+            if (err) {
+				res.send({
+					status: 0,
+					type: 'FORM_DATA_ERROR',
+					message: '表单信息错误'
+				})
+				return;
+            }
+            
+            const {username, password, status = 1} = fields;
+            console.log(username,password)
+            try {
+                if(!username) {
+                    throw new Error('用户名参数错误')
+                } else if(!password) {
+                    throw new Error('密码参数错误')
                 }
-            }).then(function(p) {
-                var _data = {
-                    code:0,
-                    data:JSON.parse(JSON.stringify(p))
+            } catch (error) {
+                console.log(error.message, error);
+                res.send({
+                    status: 0,
+                    type: 'GET_PARAM_ERROR',
+                    message: error.message
+                })
+                return;
+            }
+
+            try {
+                AdminModel.find({
+                    where: {
+                        name: username
+                    }
+                }).then(function(data) {
+                    if(data){
+                        console.log(password,data);
+                        if(password==data.password){
+                            res.send({
+                                status:1,
+                                type:'LOGIN_SUCCESS',
+                                message:'登录成功！'
+                            })
+                            return;
+                        }
+                        res.send({
+                            status:0,
+                            type:'LOGIN_FAILED',
+                            message:'登录失败，用户名或密码错误！'
+                        })
+
+                    } else {
+                        AdminModel.create({
+                            name: username,
+                            password: password,
+                            gender:true
+                        }).then(function(res){
+                            if(res && res.id) {
+                                res.send({
+                                    status:1,
+                                    type:'LOGIN_SUCCESS',
+                                    message:'注册成功！'
+                                })
+                            } else {
+                                res.send({
+                                    status:0,
+                                    type:'LOGIN_SUCCESS',
+                                    message:'注册失败！'
+                                })
+                            }
+                        })
+                    }
+                    
+                    // var _data = {
+                    //     code:0,
+                    //     data:JSON.parse(JSON.stringify(data.dataValues))
+                    // }
+                    // res.jsonp(_data);
+                }).catch(function(err){
+                    console.log('failed: ' + err);
+                });
+
+            } catch (error) {
+                throw new Error('数据查询错误')
+            }
+        });
+       
+    }
+    async register(req,res,next){
+        const form = new formidable.IncomingForm();
+        form.parse(req, async (err, fields, files) => {
+            if (err) {
+				res.send({
+					status: 0,
+					type: 'FORM_DATA_ERROR',
+					message: '表单信息错误'
+				})
+				return;
+            }
+            
+            const {username, password, status = 1} = fields;
+            console.log(username,password)
+            try {
+                if(!username) {
+                    throw new Error('请填写用户名')
+                } else if(!password) {
+                    throw new Error('请填写密码')
                 }
-                res.jsonp(_data);
-            }).catch(function(err){
-                console.log('failed: ' + err);
-            });
-        } catch (error) {
-            console.log("失败");
-        }
-        
-        // console.log(`find ${admins.length} admins:`);
-        // for(let p of admins){
-        //     console.log(JSON.stringify(p));
-        // }
-        // res.jsonp({
-        //     code: '0',
-        //     name:'乘风',
-        //     github:'https://github.com/Faithree',
-        //     sex:'男',
-        //     examTime:'2017-04-13',
-        //     province:'广东',
-        //     city:'广州',
-        //     country:'中国',
-        //     age:22,
-        // })
-        // return;
+            } catch (error) {
+                console.log(error.message, error);
+                res.send({
+                    status: 0,
+                    type: 'GET_PARAM_ERROR',
+                    message: error.message
+                })
+                return;
+            }
+
+            try {
+                AdminModel.find({
+                    where: {
+                        name: username
+                    }
+                }).then(function(data) {
+                    if(data){
+                        res.send({
+                            status:0,
+                            type:'REGISTR_FAILED',
+                            message:'注册失败，用户名已存在！'
+                        })
+                    } else {
+                        AdminModel.create({
+                            name: username,
+                            password: password,
+                            gender:true
+                        }).then(function(res){
+                            if(res && res.id) {
+                                res.send({
+                                    status:1,
+                                    type:'LOGIN_SUCCESS',
+                                    message:'注册成功！'
+                                })
+                            } else {
+                                res.send({
+                                    status:0,
+                                    type:'LOGIN_SUCCESS',
+                                    message:'注册失败！'
+                                })
+                            }
+                        })
+                    }
+                    
+                }).catch(function(err){
+                    console.log('failed: ' + err);
+                });
+
+            } catch (error) {
+                throw new Error('数据查询错误')
+            }
+        });
     }
 }
 
