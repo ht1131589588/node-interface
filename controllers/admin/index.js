@@ -45,7 +45,7 @@ class Admin extends AddressComponent {
                     }
                 }).then(function(data) {
                     if(data){
-                        console.log(password,data);
+                        console.log(password==data.password);
                         if(password==data.password){
                             res.send({
                                 status:1,
@@ -61,25 +61,30 @@ class Admin extends AddressComponent {
                         })
 
                     } else {
-                        AdminModel.create({
-                            name: username,
-                            password: password,
-                            gender:true
-                        }).then(function(res){
-                            if(res && res.id) {
-                                res.send({
-                                    status:1,
-                                    type:'LOGIN_SUCCESS',
-                                    message:'注册成功！'
-                                })
-                            } else {
-                                res.send({
-                                    status:0,
-                                    type:'LOGIN_SUCCESS',
-                                    message:'注册失败！'
-                                })
-                            }
+                        res.send({
+                            status:0,
+                            type:'LOGIN_FAILED',
+                            message:'不存在的用户'
                         })
+                        // AdminModel.create({
+                        //     name: username,
+                        //     password: password,
+                        //     gender:true
+                        // }).then(function(result){
+                        //     if(result && result.id) {
+                        //         res.send({
+                        //             status:1,
+                        //             type:'LOGIN_SUCCESS',
+                        //             message:'注册成功！'
+                        //         })
+                        //     } else {
+                        //         res.send({
+                        //             status:0,
+                        //             type:'LOGIN_SUCCESS',
+                        //             message:'注册失败！'
+                        //         })
+                        //     }
+                        // })
                     }
                     
                     // var _data = {
@@ -169,6 +174,36 @@ class Admin extends AddressComponent {
                 throw new Error('数据查询错误')
             }
         });
+    }
+    async getAdminInfo(req,res,next){
+        const admin_id = req.session.admin_id;
+		if (!admin_id || !Number(admin_id)) {
+			console.log('获取管理员信息的session失效');
+			res.send({
+				status: 0,
+				type: 'ERROR_SESSION',
+				message: '获取管理员信息失败'
+			})
+			return 
+		}
+		try{
+			const info = await AdminModel.findOne({id: admin_id}, '-_id -__v -password');
+			if (!info) {
+				throw new Error('未找到当前管理员')
+			}else{
+				res.send({
+					status: 1,
+					data: info
+				})
+			}
+		}catch(err){
+			console.log('获取管理员信息失败');
+			res.send({
+				status: 0,
+				type: 'GET_ADMIN_INFO_FAILED',
+				message: '获取管理员信息失败'
+			})
+		}
     }
 }
 
